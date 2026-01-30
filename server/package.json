@@ -1,0 +1,23 @@
+{
+  "name": "void-app-server",
+  "version": "1.0.0",
+  "description": "Sistema que maneja usuarios con roles y persiste únicamente la información necesaria",
+  "main": "core/server.ts",
+  "scripts": {
+    "dev": "tsx --watch --env-file=.env core/server.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.28.2",
+  "devDependencies": {
+    "@types/express": "5.0.6",
+    "@types/morgan": "1.9.10",
+    "@types/node": "25.1.0",
+    "tsx": "4.21.0"
+  },
+  "dependencies": {
+    "express": "5.2.1",
+    "morgan": "1.10.1"
+  }
+}
