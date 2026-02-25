@@ -1,0 +1,22 @@
+POST http://localhost:8000/auth/register HTTP/1.1
+content-type: application/json
+
+{
+    "username": "bugged",
+    "password": "pass1234"
+}
+
+###
+
+POST http://localhost:8000/auth/login HTTP/1.1
+content-type: application/json
+
+{
+    "username": "bugged",
+    "password": "pass1234"
+}
+
+###
+
+GET http://localhost:8000/auth/me HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5YWUwM2FiZi0yNzdjLTQ4MDItYWExOS1kZDEzODU1ZjQyMjYiLCJ1c2VybmFtZSI6Imd1c3MiLCJpYXQiOjE3NzIwMzQyNjAsImV4cCI6MTc3MjEyMDY2MH0.z1xmsF6pMdBHPG2gDgkKVaNybhltEI6dU-_xCF4Kl6A
