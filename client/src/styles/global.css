@@ -1,0 +1,9 @@
+@import "tailwindcss";
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+@theme {
+  --color-sunsetflower-dust-grey: #d6d6d6;
+  --color-sunsetflower-carbon-black: #202020;
+  --color-sunsetflower-bright-lemon: #ffee32;
+  --color-sunsetflower-gold: #ffd100;
+  --color-sunsetflower-graphite: #333533;
+}
