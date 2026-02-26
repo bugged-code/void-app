@@ -1,0 +1,101 @@
+---
+import MainLayout from "../layouts/main.layout.astro";
+---
+
+<MainLayout title="VOID APP | REGISTER">
+  <main class="grid place-items-center pt-16">
+    <section class="w-full max-w-xs">
+      <h1
+        translate="no"
+        class="font-extrabold text-5xl tracking-widest text-center flex justify-around"
+      >
+        <span>R</span><span>E</span><span>G</span><span>I</span><span>S</span
+        ><span>T</span><span>E</span><span>R</span>
+      </h1>
+
+      <form method="post" id="register-form" class="grid gap-8 mt-8">
+        <fieldset class="grid">
+          <label class="w-[8ch] font-bold" for="username" translate="no"
+            >Username</label
+          >
+          <input
+            class="flex-1 outline-none border-2 rounded px-2 py-1 transition focus:border-sunsetflower-bright-lemon"
+            type="text"
+            name="username"
+            id="username"
+            autocomplete="off"
+            required
+          />
+        </fieldset>
+        <fieldset class="grid">
+          <label class="w-[8ch] font-bold" for="password" translate="no"
+            >Password</label
+          >
+          <input
+            class="flex-1 outline-none border-2 rounded px-2 py-1 focus:border-sunsetflower-bright-lemon"
+            type="password"
+            name="password"
+            id="password"
+            required
+          />
+        </fieldset>
+        <button
+          id="register-submit-btn"
+          type="submit"
+          class="cursor-pointer transition-[background] hover:bg-sunsetflower-graphite/25 px-2 py-1 rounded"
+          >Create</button
+        >
+      </form>
+
+      <p
+        id="register-form-errors"
+        class="w-auto h-auto text-rose-500 mt-4 font-light text-center"
+      >
+      </p>
+
+      <cite class="block mt-8 font-extralight text-sm text-center"
+        >Do you already have an account?,&nbsp;<a
+          class="font-normal underline text-sunsetflower-gold"
+          href="/login">Login</a
+        ></cite
+      >
+    </section>
+  </main>
+</MainLayout>
+
+<script>
+  import { createAccount } from "../api/auth";
+
+  const registerSubmitBtn = document.getElementById(
+    "register-submit-btn",
+  ) as HTMLButtonElement;
+  const registerFormErrors = document.getElementById(
+    "register-form-errors",
+  ) as HTMLParagraphElement;
+  const registerFormElement = document.getElementById(
+    "register-form",
+  ) as HTMLFormElement;
+
+  registerFormElement?.addEventListener("submit", async (ev: SubmitEvent) => {
+    ev.preventDefault();
+    const formTarget = ev.target as any;
+    const username = formTarget?.username as HTMLInputElement;
+    const password = formTarget?.password as HTMLInputElement;
+
+    registerSubmitBtn.disabled = true;
+    registerFormErrors.innerText = "";
+
+    try {
+      const res = await createAccount(username.value, password.value);
+
+      if (res.ok) {
+        globalThis.location.href = "/login";
+      } else {
+        if (res.status === 401)
+          registerFormErrors.innerText = "User already exists";
+      }
+    } finally {
+      registerSubmitBtn.disabled = false;
+    }
+  });
+</script>

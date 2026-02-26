@@ -1,0 +1,101 @@
+---
+import MainLayout from "../layouts/main.layout.astro";
+---
+
+<MainLayout title="VOID APP | LOGIN">
+  <main class="grid place-items-center pt-16">
+    <section class="w-full max-w-xs">
+      <h1
+        translate="no"
+        class="font-extrabold text-5xl tracking-widest text-center flex justify-around"
+      >
+        <span>L</span><span>O</span><span>G</span><span>I</span><span>N</span>
+      </h1>
+
+      <form method="post" id="login-form" class="grid gap-8 mt-8">
+        <fieldset class="grid">
+          <label class="w-[8ch] font-bold" for="username" translate="no"
+            >Username</label
+          >
+          <input
+            class="flex-1 outline-none border-2 rounded px-2 py-1 transition focus:border-sunsetflower-bright-lemon"
+            type="text"
+            name="username"
+            id="username"
+            autocomplete="off"
+            required
+          />
+        </fieldset>
+        <fieldset class="grid">
+          <label class="w-[8ch] font-bold" for="password" translate="no"
+            >Password</label
+          >
+          <input
+            class="flex-1 outline-none border-2 rounded px-2 py-1 focus:border-sunsetflower-bright-lemon"
+            type="password"
+            name="password"
+            id="password"
+            required
+          />
+        </fieldset>
+        <button
+          id="login-submit-btn"
+          type="submit"
+          class="cursor-pointer transition-[background] hover:bg-sunsetflower-graphite/25 px-2 py-1 rounded"
+          >Login</button
+        >
+      </form>
+
+      <p
+        id="login-form-errors"
+        class="w-auto h-auto text-rose-500 mt-4 font-light text-center"
+      >
+      </p>
+
+      <cite class="block mt-8 font-extralight text-sm text-center"
+        >Don't have an account yet?,&nbsp;<a
+          class="font-normal underline text-sunsetflower-gold"
+          href="/register">Create one</a
+        ></cite
+      >
+    </section>
+  </main>
+</MainLayout>
+
+<script>
+  import { loginSession } from "../api/auth";
+
+  const loginSubmitBtn = document.getElementById(
+    "login-submit-btn",
+  ) as HTMLButtonElement;
+  const loginFormErrors = document.getElementById(
+    "login-form-errors",
+  ) as HTMLParagraphElement;
+  const loginFormElement = document.getElementById(
+    "login-form",
+  ) as HTMLFormElement;
+
+  loginFormElement?.addEventListener("submit", async (ev: SubmitEvent) => {
+    ev.preventDefault();
+    const formTarget = ev.target as any;
+    const username = formTarget?.username as HTMLInputElement;
+    const password = formTarget?.password as HTMLInputElement;
+
+    loginSubmitBtn.disabled = true;
+    loginFormErrors.innerText = "";
+
+    try {
+      const res = await loginSession(username.value, password.value);
+
+      if (res.ok) {
+        // TODO: Guardar token para usar en sockets (lo guardaríamos para header en la etiqueta Authoriation: Bearer <token>)
+        globalThis.location.href = "/dashboard";
+      } else {
+        if (res.status === 401)
+          loginFormErrors.innerText = "Invalid credentials";
+      }
+    } finally {
+      loginSubmitBtn.disabled = false;
+    }
+  });
+</script>
