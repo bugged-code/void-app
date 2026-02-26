@@ -18,6 +18,7 @@ export const createAccount = async (username: string, password: string) => {
 export const loginSession = async (username: string, password: string) => {
   const res = await fetch(URL_BASE + "/login", {
     method: "POST",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -26,5 +27,6 @@ export const loginSession = async (username: string, password: string) => {
       password,
     }),
   });
+
   return res;
 };

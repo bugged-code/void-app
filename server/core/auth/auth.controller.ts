@@ -21,7 +21,14 @@ export const login = (req: Request, res: Response) => {
     { expiresIn: process.env.JWT_EXPIRES as jwt.SignOptions["expiresIn"] },
   );
 
-  res.json({ token });
+  res
+    .cookie("auth_token", token, {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: false,
+      maxAge: 1000 * 60 * 60 * 24,
+    })
+    .json({ message: "Login ok" });
 };
 
 export const register = (req: Request, res: Response) => {
@@ -39,5 +46,9 @@ export const register = (req: Request, res: Response) => {
     role: "user",
   } as User);
 
-  res.sendStatus(201);
+  res.status(201).json({ message: "Register ok" });
+};
+
+export const logout = (_: Request, res: Response) => {
+  res.clearCookie("auth_token").json({ message: "Logout ok" });
 };
